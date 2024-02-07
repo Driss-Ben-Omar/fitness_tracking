@@ -1,5 +1,6 @@
 package com.fitness_tracking.Dao;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -9,7 +10,12 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.fitness_tracking.entities.Exercice;
 import com.fitness_tracking.entities.User;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -111,7 +117,54 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return contentValues;
     }
 
-    public boolean save(User user) {
+    public Optional<User> getUserByEmailAndPassword(String email, String password) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        Cursor cursor = null;
+
+        try {
+            cursor = sqLiteDatabase.rawQuery("select * from user where email = ? and password = ?", new String[]{email, password});
+
+            if (cursor.moveToFirst()) {
+                int idIndex = cursor.getColumnIndex("id");
+                int nameIndex = cursor.getColumnIndex("name");
+                int emailIndex = cursor.getColumnIndex("email");
+                int passwordIndex = cursor.getColumnIndex("password");
+                int weightIndex = cursor.getColumnIndex("weight");
+                int heightIndex = cursor.getColumnIndex("height");
+                int sexIndex = cursor.getColumnIndex("sex");
+
+                if (nameIndex != -1 && weightIndex != -1 && passwordIndex != -1 && emailIndex != -1 && heightIndex != -1 && sexIndex!= -1) {
+                    Long userId = cursor.getLong(idIndex);
+                    User user = new User(
+                            userId,
+                            cursor.getString(emailIndex),
+                            cursor.getString(nameIndex),
+                            cursor.getString(passwordIndex),
+                            cursor.getDouble(weightIndex),
+                            cursor.getDouble(heightIndex),
+                            cursor.getString(sexIndex)
+                    );
+                    return Optional.of(user);
+                } else {
+                    Log.e("DatabaseHandler", "One or more columns not found in the result set");
+                    return Optional.empty();
+                }
+            } else {
+                Log.d("DatabaseHandler", "No user found with the given email and password");
+                return Optional.empty();
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseHandler", "Error while retrieving user", e);
+            return Optional.empty();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            sqLiteDatabase.close();
+        }
+    }
+
+    public boolean saveUser(User user) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = getUserContentValues(user);
 
@@ -131,6 +184,88 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         } finally {
             sqLiteDatabase.close();
         }
+    }
+
+    public void updateUser(User user) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = getUserContentValues(user);
+
+        try {
+            int rowsAffected = sqLiteDatabase.update("USER", contentValues, "id = ?", new String[]{String.valueOf(user.getId())});
+
+            if (rowsAffected > 0) {
+                Log.d("DatabaseHandler", "User updated successfully");
+            } else {
+                Log.d("DatabaseHandler", "Failed to update user");
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseHandler", "Error while updating user", e);
+        } finally {
+            sqLiteDatabase.close();
+        }
+    }
+
+    public void updateExercice(Exercice exercice) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("name", exercice.getName());
+        contentValues.put("path", exercice.getPath());
+        contentValues.put("description", exercice.getDescription());
+        contentValues.put("id_user", exercice.getIdUser());
+
+        sqLiteDatabase.update("EXERCICE", contentValues, "id = ?", new String[]{String.valueOf(exercice.getId())});
+
+        sqLiteDatabase.close();
+    }
+
+    public long addExercice(Exercice exercice) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("name", exercice.getName());
+        contentValues.put("path", exercice.getPath());
+        contentValues.put("description", exercice.getDescription());
+        contentValues.put("id_user", exercice.getIdUser());
+
+        long id = sqLiteDatabase.insert("EXERCICE", null, contentValues);
+
+        sqLiteDatabase.close();
+        return id;
+    }
+
+    public void deleteExercice(long id) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        sqLiteDatabase.delete("EXERCICE", "id = ?", new String[]{String.valueOf(id)});
+
+        sqLiteDatabase.close();
+    }
+
+    @SuppressLint("Range")
+    public List<Exercice> getAllExercices() {
+        List<Exercice> exercicesList = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.query("EXERCICE", null, null, null, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Exercice exercice = new Exercice(
+                        cursor.getLong(cursor.getColumnIndex("id")),
+                        cursor.getString(cursor.getColumnIndex("name")),
+                        cursor.getString(cursor.getColumnIndex("path")),
+                        cursor.getString(cursor.getColumnIndex("description")),
+                        cursor.getLong(cursor.getColumnIndex("id_user"))
+                );
+                exercicesList.add(exercice);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        sqLiteDatabase.close();
+        return exercicesList;
     }
 
 }

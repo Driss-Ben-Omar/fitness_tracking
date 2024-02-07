@@ -10,6 +10,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+
 import com.fitness_tracking.entities.Exercice;
 import com.fitness_tracking.entities.Produit;
 import com.fitness_tracking.entities.Repat;
@@ -80,6 +81,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     "FOREIGN KEY (id_exercice) REFERENCES EXERCICE(id), " +
                     "FOREIGN KEY (id_user) REFERENCES USER(id)" +
                     ");";
+
 
     public DatabaseHandler(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);

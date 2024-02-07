@@ -10,6 +10,16 @@ public class Exercice {
 
     String description;
 
+    Long idUser;
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
+    }
+
     public Long getId() {
         return id;
     }
@@ -42,11 +52,12 @@ public class Exercice {
         this.description = description;
     }
 
-    public Exercice(Long id, String name, String path, String description) {
+    public Exercice(Long id, String name, String path, String description, Long idUser) {
         this.id = id;
         this.name = name;
         this.path = path;
         this.description = description;
+        this.idUser = idUser;
     }
 
     public Exercice() {

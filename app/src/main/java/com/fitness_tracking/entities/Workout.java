@@ -16,6 +16,16 @@ public class Workout {
 
     Date date;
 
+    Long idUser;
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
+    }
+
     public Long getId() {
         return id;
     }
@@ -64,13 +74,14 @@ public class Workout {
         this.date = date;
     }
 
-    public Workout(Long id, Long idExercice, double weight, int serie, int repetition, Date date) {
+    public Workout(Long id, Long idExercice, double weight, int serie, int repetition, Date date, Long idUser) {
         this.id = id;
         this.idExercice = idExercice;
         this.weight = weight;
         this.serie = serie;
         this.repetition = repetition;
         this.date = date;
+        this.idUser = idUser;
     }
 
     public Workout() {

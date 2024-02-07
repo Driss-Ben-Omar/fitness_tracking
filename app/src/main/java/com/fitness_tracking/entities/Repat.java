@@ -10,10 +10,21 @@ public class Repat {
 
     Date date;
 
-    public Repat(Long id, Long idProduit, Date date) {
+    Long idUser;
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
+    }
+
+    public Repat(Long id, Long idProduit, Date date, Long idUser) {
         this.id = id;
         this.idProduit = idProduit;
         this.date = date;
+        this.idUser = idUser;
     }
 
     public Repat() {

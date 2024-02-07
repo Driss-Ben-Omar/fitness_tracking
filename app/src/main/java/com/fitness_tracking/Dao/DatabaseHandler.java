@@ -12,9 +12,12 @@ import androidx.annotation.Nullable;
 
 import com.fitness_tracking.entities.Exercice;
 import com.fitness_tracking.entities.Produit;
+import com.fitness_tracking.entities.Repat;
 import com.fitness_tracking.entities.User;
+import com.fitness_tracking.entities.Workout;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -336,6 +339,135 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         sqLiteDatabase.close();
         return produitsList;
+    }
+
+    public long addRepat(Repat repat) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("id_produit", repat.getIdProduit());
+        contentValues.put("date", repat.getDate().getTime()); // Stocker la date sous forme de timestamp
+        contentValues.put("id_user", repat.getIdUser());
+
+        long id = sqLiteDatabase.insert("REPAT", null, contentValues);
+
+        sqLiteDatabase.close();
+        return id;
+    }
+
+    public void updateRepat(Repat repat) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("id_produit", repat.getIdProduit());
+        contentValues.put("date", repat.getDate().getTime()); // Stocker la date sous forme de timestamp
+        contentValues.put("id_user", repat.getIdUser());
+
+        sqLiteDatabase.update("REPAT", contentValues, "id = ?", new String[]{String.valueOf(repat.getId())});
+
+        sqLiteDatabase.close();
+    }
+
+    public void deleteRepat(long id) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        sqLiteDatabase.delete("REPAT", "id = ?", new String[]{String.valueOf(id)});
+
+        sqLiteDatabase.close();
+    }
+
+    @SuppressLint("Range")
+    public List<Repat> getAllRepatsForUser(long userId) {
+        List<Repat> repatsList = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.query("REPAT", null, "id_user = ?", new String[]{String.valueOf(userId)}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Repat repat = new Repat(
+                        cursor.getLong(cursor.getColumnIndex("id")),
+                        cursor.getLong(cursor.getColumnIndex("id_produit")),
+                        new Date(cursor.getLong(cursor.getColumnIndex("date"))),
+                        cursor.getLong(cursor.getColumnIndex("id_user"))
+                );
+                repatsList.add(repat);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        sqLiteDatabase.close();
+        return repatsList;
+    }
+
+    public long addWorkout(Workout workout) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("id_exercice", workout.getIdExercice());
+        contentValues.put("weight", workout.getWeight());
+        contentValues.put("serie", workout.getSerie());
+        contentValues.put("repetition", workout.getRepetition());
+        contentValues.put("date", workout.getDate().getTime()); // Stocker la date sous forme de timestamp
+        contentValues.put("id_user", workout.getIdUser());
+
+        long id = sqLiteDatabase.insert("WORKOUT", null, contentValues);
+
+        sqLiteDatabase.close();
+        return id;
+    }
+
+    public void updateWorkout(Workout workout) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("id_exercice", workout.getIdExercice());
+        contentValues.put("weight", workout.getWeight());
+        contentValues.put("serie", workout.getSerie());
+        contentValues.put("repetition", workout.getRepetition());
+        contentValues.put("date", workout.getDate().getTime()); // Stocker la date sous forme de timestamp
+        contentValues.put("id_user", workout.getIdUser());
+
+        sqLiteDatabase.update("WORKOUT", contentValues, "id = ?", new String[]{String.valueOf(workout.getId())});
+
+        sqLiteDatabase.close();
+    }
+
+    public void deleteWorkout(long id) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        sqLiteDatabase.delete("WORKOUT", "id = ?", new String[]{String.valueOf(id)});
+
+        sqLiteDatabase.close();
+    }
+
+    @SuppressLint("Range")
+    public List<Workout> getAllWorkoutsForUser(long userId) {
+        List<Workout> workoutsList = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.query("WORKOUT", null, "id_user = ?", new String[]{String.valueOf(userId)}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Workout workout = new Workout(
+                        cursor.getLong(cursor.getColumnIndex("id")),
+                        cursor.getLong(cursor.getColumnIndex("id_exercice")),
+                        cursor.getDouble(cursor.getColumnIndex("weight")),
+                        cursor.getInt(cursor.getColumnIndex("serie")),
+                        cursor.getInt(cursor.getColumnIndex("repetition")),
+                        new Date(cursor.getLong(cursor.getColumnIndex("date"))),
+                        cursor.getLong(cursor.getColumnIndex("id_user"))
+                );
+                workoutsList.add(workout);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        sqLiteDatabase.close();
+        return workoutsList;
     }
 
 }

@@ -11,6 +11,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.fitness_tracking.entities.Exercice;
+import com.fitness_tracking.entities.Produit;
 import com.fitness_tracking.entities.User;
 
 import java.util.ArrayList;
@@ -266,6 +267,75 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         sqLiteDatabase.close();
         return exercicesList;
+    }
+
+    public long addProduit(Produit produit) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("name", produit.getName());
+        contentValues.put("calorie", produit.getCalorie());
+        contentValues.put("proteine", produit.getProteine());
+        contentValues.put("carbe", produit.getCarbe());
+        contentValues.put("fate", produit.getFate());
+        contentValues.put("id_user", produit.getIdUser());
+
+        long id = sqLiteDatabase.insert("PRODUIT", null, contentValues);
+
+        sqLiteDatabase.close();
+        return id;
+    }
+
+    public void updateProduit(Produit produit) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("name", produit.getName());
+        contentValues.put("calorie", produit.getCalorie());
+        contentValues.put("proteine", produit.getProteine());
+        contentValues.put("carbe", produit.getCarbe());
+        contentValues.put("fate", produit.getFate());
+        contentValues.put("id_user", produit.getIdUser());
+
+        sqLiteDatabase.update("PRODUIT", contentValues, "id = ?", new String[]{String.valueOf(produit.getId())});
+
+        sqLiteDatabase.close();
+    }
+
+    public void deleteProduit(long id) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+
+        sqLiteDatabase.delete("PRODUIT", "id = ?", new String[]{String.valueOf(id)});
+
+        sqLiteDatabase.close();
+    }
+
+    @SuppressLint("Range")
+    public List<Produit> getAllProduitsForUser(long userId) {
+        List<Produit> produitsList = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.query("PRODUIT", null, "id_user = ?", new String[]{String.valueOf(userId)}, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                Produit produit = new Produit(
+                        cursor.getLong(cursor.getColumnIndex("id")),
+                        cursor.getString(cursor.getColumnIndex("name")),
+                        cursor.getDouble(cursor.getColumnIndex("calorie")),
+                        cursor.getDouble(cursor.getColumnIndex("proteine")),
+                        cursor.getDouble(cursor.getColumnIndex("carbe")),
+                        cursor.getDouble(cursor.getColumnIndex("fate")),
+                        cursor.getLong(cursor.getColumnIndex("id_user"))
+                );
+                produitsList.add(produit);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        sqLiteDatabase.close();
+        return produitsList;
     }
 
 }

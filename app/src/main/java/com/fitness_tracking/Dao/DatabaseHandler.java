@@ -1,10 +1,15 @@
 package com.fitness_tracking.Dao;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
+
+import com.fitness_tracking.entities.User;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
@@ -82,4 +87,50 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
 
     }
+
+    public Boolean checkEmail(String email) {
+        SQLiteDatabase MyDatabase = this.getWritableDatabase();
+        Cursor cursor = MyDatabase.rawQuery("SELECT * FROM user WHERE email = ?", new String[]{email});
+        return cursor.getCount() > 0;
+    }
+
+    public Boolean checkEmailPassword(String email, String password) {
+        SQLiteDatabase MyDatabase = this.getWritableDatabase();
+        Cursor cursor = MyDatabase.rawQuery("SELECT * FROM users WHERE email = ? AND password = ?", new String[]{email, password});
+        return cursor.getCount() > 0;
+    }
+
+    private ContentValues getUserContentValues(User user) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("email", user.getEmail());
+        contentValues.put("name", user.getName());
+        contentValues.put("password", user.getPassword());
+        contentValues.put("weight", user.getWeight());
+        contentValues.put("height", user.getHeight());
+        contentValues.put("sex", user.getSex());
+        return contentValues;
+    }
+
+    public boolean save(User user) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues contentValues = getUserContentValues(user);
+
+        try {
+            long result = sqLiteDatabase.insert("user", null, contentValues);
+
+            if (result != -1) {
+                Log.d("DatabaseHandler", "User saved successfully");
+                return true;
+            } else {
+                Log.e("DatabaseHandler", "Error while saving user: " + result);
+                return false;
+            }
+        } catch (Exception e) {
+            Log.e("DatabaseHandler", "Error while saving user", e);
+            return false;
+        } finally {
+            sqLiteDatabase.close();
+        }
+    }
+
 }

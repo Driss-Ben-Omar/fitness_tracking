@@ -180,6 +180,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
+    public boolean checkUserCredentials(String email, String password) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM users WHERE email = ? AND password = ?", new String[]{email, password});
+
+        try {
+            if (cursor.getCount()>0) {
+                return true;
+            } else {
+                return false;
+            }
+        } finally {
+            cursor.close();
+        }
+    }
+
     public boolean saveUser(User user) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = getUserContentValues(user);

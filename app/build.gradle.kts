@@ -6,6 +6,10 @@ android {
     namespace = "com.fitness_tracking"
     compileSdk = 34
 
+    buildFeatures {
+        dataBinding = true
+    }
+
     defaultConfig {
         applicationId = "com.fitness_tracking"
         minSdk = 24

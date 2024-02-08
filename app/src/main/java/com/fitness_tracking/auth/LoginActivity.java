@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
                                     SessionManager.getInstance().loginUser(user);
                                     // Now we have the logged user data
                                     Toast.makeText(LoginActivity.this, "Connexion réussie.", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), Home.class);
+                                    Intent intent = new Intent(getApplicationContext(), ProductActivity.class);
                                     startActivity(intent);
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Connexion échoué.", Toast.LENGTH_SHORT).show();

@@ -7,10 +7,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 
+import com.fitness_tracking.auth.Register;
 import com.fitness_tracking.entities.Exercice;
 import com.fitness_tracking.entities.Produit;
 import com.fitness_tracking.entities.Repat;
@@ -341,32 +344,54 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     @SuppressLint("Range")
+    public List<Produit> getAllProduitsForUser2(long id) {
+        List<Produit> dataArrayList=new ArrayList<>();
+        dataArrayList.add(new Produit(1L," String name",350, 5, 10, 3,id));
+        dataArrayList.add(new Produit(2L," String name",350, 5, 10, 3,id));
+        dataArrayList.add(new Produit(3L," String name",350, 5, 10, 3,id));
+        return dataArrayList;
+    }
+
+    @SuppressLint("Range")
     public List<Produit> getAllProduitsForUser(long userId) {
-        List<Produit> produitsList = new ArrayList<>();
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        ArrayList<Produit> produitsList = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = null;
+        Cursor cursor = null;
 
-        Cursor cursor = sqLiteDatabase.query("PRODUIT", null, "id_user = ?", new String[]{String.valueOf(userId)}, null, null, null);
+        try {
+            sqLiteDatabase = this.getReadableDatabase();
 
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                Produit produit = new Produit(
-                        cursor.getLong(cursor.getColumnIndex("id")),
-                        cursor.getString(cursor.getColumnIndex("name")),
-                        cursor.getDouble(cursor.getColumnIndex("calorie")),
-                        cursor.getDouble(cursor.getColumnIndex("proteine")),
-                        cursor.getDouble(cursor.getColumnIndex("carbe")),
-                        cursor.getDouble(cursor.getColumnIndex("fate")),
-                        cursor.getLong(cursor.getColumnIndex("id_user"))
-                );
-                produitsList.add(produit);
-            } while (cursor.moveToNext());
+            cursor = sqLiteDatabase.query("PRODUIT", null, "id_user = ?", new String[]{String.valueOf(userId)}, null, null, null);
 
-            cursor.close();
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    Produit produit = new Produit(
+                            cursor.getLong(cursor.getColumnIndex("id")),
+                            cursor.getString(cursor.getColumnIndex("name")),
+                            cursor.getDouble(cursor.getColumnIndex("calorie")),
+                            cursor.getDouble(cursor.getColumnIndex("proteine")),
+                            cursor.getDouble(cursor.getColumnIndex("carbe")),
+                            cursor.getDouble(cursor.getColumnIndex("fate")),
+                            cursor.getLong(cursor.getColumnIndex("id_user"))
+                    );
+                    produitsList.add(produit);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close cursor and database connection
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (sqLiteDatabase != null) {
+                sqLiteDatabase.close();
+            }
         }
 
-        sqLiteDatabase.close();
         return produitsList;
     }
+
 
     public long addRepat(Repat repat) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();

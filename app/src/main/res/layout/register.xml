@@ -11,8 +11,8 @@
         android:scaleType="centerCrop"
         android:src="@drawable/download"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="183dp"
-        tools:layout_editor_absoluteY="76dp" />
+        tools:layout_editor_absoluteX="88dp"
+        tools:layout_editor_absoluteY="52dp" />
 
     <LinearLayout
         android:id="@+id/contentLayout"
@@ -132,7 +132,6 @@
             android:backgroundTint="#3498DB"
             android:text="Register"
             app:cornerRadius="15dp"
-
             />
 
     </LinearLayout>

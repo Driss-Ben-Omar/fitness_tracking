@@ -26,6 +26,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
 
+    private static final String database="fitness";
+
     private static final String CREATE_TABLE_USER =
             "CREATE TABLE IF NOT EXISTS USER (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -83,27 +85,35 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     ");";
 
 
-    public DatabaseHandler(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    public DatabaseHandler(@Nullable Context context) {
+        super(context, database, null, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db)
     {
-        
-
+        db.execSQL(CREATE_TABLE_USER);
+        db.execSQL(CREATE_TABLE_EXERCISE);
+        db.execSQL(CREATE_TABLE_PRODUIT);
+        db.execSQL(CREATE_TABLE_WORKOUT);
+        db.execSQL(CREATE_TABLE_REPAT);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1)
     {
-
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS User");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Exercice");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Workout");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Produit");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS Repat");
+        onCreate(sqLiteDatabase);
     }
 
     public Boolean checkEmail(String email) {
-        SQLiteDatabase MyDatabase = this.getWritableDatabase();
+        SQLiteDatabase MyDatabase = this.getReadableDatabase();
         Cursor cursor = MyDatabase.rawQuery("SELECT * FROM user WHERE email = ?", new String[]{email});
-        return cursor.getCount() > 0;
+        return cursor.getCount() == 0;
     }
 
     public Boolean checkEmailPassword(String email, String password) {

@@ -22,7 +22,6 @@
             />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputEmail"
             style="@style/parent"
             android:layout_marginTop="@dimen/loginViewsMargin">
             <com.google.android.material.textfield.TextInputEditText
@@ -34,11 +33,10 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editPassword"
             style="@style/parent"
             android:layout_marginTop="@dimen/loginViewsMargin">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextPassword"
+                android:id="@+id/editPassword"
                 style="@style/modifiedEditText"
                 android:hint="@string/login_password_hint"
                 android:maxLines="1"
@@ -62,6 +60,7 @@
             android:layout_marginTop="@dimen/loginViewsMargin"/>
 
         <TextView
+            android:id="@+id/dontHave"
             style="@style/parent"
             android:textAlignment="center"
             android:textStyle="bold"

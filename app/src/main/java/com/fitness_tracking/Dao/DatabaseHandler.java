@@ -181,8 +181,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public boolean checkUserCredentials(String email, String password) {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM users WHERE email = ? AND password = ?", new String[]{email, password});
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM user WHERE email = ? AND password = ?", new String[]{email, password});
 
         try {
             if (cursor.getCount()>0) {

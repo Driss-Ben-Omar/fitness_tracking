@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/register"
-            android:textAppearance="@style/headerTextPrimary"
+            style="@style/headerTextPrimary"
             android:layout_marginTop="@dimen/loginViewsMargin"/>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -30,8 +30,23 @@
             style="@style/parent"
             android:layout_marginTop="@dimen/signup_text_margin_top">
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextEmail"
                 style="@style/modifiedEditText"
-                android:inputType="text"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:hint="Email"
+            />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/parent"
+            android:layout_marginTop="@dimen/signup_text_margin_top">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextName"
+                style="@style/modifiedEditText"
+                android:inputType="textPersonName"
                 android:maxLines="1"
                 android:hint="Name"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -42,10 +57,37 @@
             style="@style/parent"
             android:layout_marginTop="@dimen/signup_text_margin_top">
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextPassword"
                 style="@style/modifiedEditText"
-                android:inputType="text"
+                android:inputType="textPassword"
                 android:maxLines="1"
-                android:hint="Mobile Number"/>
+                android:hint="@string/login_password_hint"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/parent"
+        android:layout_marginTop="@dimen/signup_text_margin_top">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextRepeatPassword"
+            style="@style/modifiedEditText"
+            android:hint="Repeat Password"
+            android:maxLines="1"
+            android:inputType="textPassword"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/parent"
+            android:layout_marginTop="@dimen/signup_text_margin_top">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextWeight"
+                style="@style/modifiedEditText"
+                android:hint="Weight"
+                android:maxLines="1"
+                android:inputType="numberDecimal"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -54,10 +96,11 @@
             style="@style/parent"
             android:layout_marginTop="@dimen/signup_text_margin_top">
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextHeight"
                 style="@style/modifiedEditText"
-                android:inputType="textEmailAddress"
+                android:hint="Height"
                 android:maxLines="1"
-                android:hint="@string/login_email_hint"/>
+                android:inputType="numberDecimal"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -65,12 +108,37 @@
             android:layout_height="wrap_content"
             style="@style/parent"
             android:layout_marginTop="@dimen/signup_text_margin_top">
-            <com.google.android.material.textfield.TextInputEditText
-                style="@style/modifiedEditText"
-                android:hint="@string/login_password_hint"
-                android:maxLines="1"
-                android:inputType="textPassword"/>
+
+            <RadioGroup
+                android:id="@+id/radioGroupSex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                >
+
+                <RadioButton
+                    android:id="@+id/radioButtonMale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Male"
+
+                  />
+
+                <RadioButton
+                    android:layout_marginStart="25dp"
+
+                    android:id="@+id/radioButtonFemale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Female"
+                  />
+            </RadioGroup>
+
         </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
         <Button
             android:layout_width="wrap_content"

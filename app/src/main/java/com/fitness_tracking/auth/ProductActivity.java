@@ -57,6 +57,7 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     public void showAddProductDialog(String title, Context context, Produit productToEdit) {
+        listAdapter = new ProductAdapter(context, context, dataArrayList);
         databaseHandler=new DatabaseHandler(context);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -104,6 +105,9 @@ public class ProductActivity extends AppCompatActivity {
                     Toast.makeText(context, "id: "+productToEdit.getId()+" name: "+productName+" cal:"+ calorie
                             +"prot: "+protein+"carbs"+carbs+"fats:"+fats, Toast.LENGTH_LONG).show();
                     updateProductInDatabase(productToEdit.getId(),productName,calorie,protein,carbs,fats);
+
+
+
                 }
 
                 alertDialog.dismiss();
@@ -115,11 +119,20 @@ public class ProductActivity extends AppCompatActivity {
     private void saveProductToDatabase(String productName, Double calorie, Double protein, Double carbs,Double fats) {
         Long id = SessionManager.getInstance().getCurrentUser().getId();
         Produit produit=new Produit(null,productName, calorie,protein,carbs,fats,id);
-        databaseHandler.addProduit(produit);
+        Long saved=databaseHandler.addProduit(produit);
+        if (saved != -1) {
+            dataArrayList.clear();
+            dataArrayList.addAll(databaseHandler.getAllProduitsForUser(id));
+            listAdapter.notifyDataSetChanged();
+        }
     }
     private void updateProductInDatabase(Long productId, String productName, Double calorie, Double protein, Double carbs, Double fats) {
         Long id = SessionManager.getInstance().getCurrentUser().getId();
         Produit produit=new Produit(productId,productName,calorie,protein,carbs,fats,id);
         databaseHandler.updateProduit(produit);
+
+        dataArrayList.clear();
+        dataArrayList.addAll(databaseHandler.getAllProduitsForUser(id));
+        listAdapter.notifyDataSetChanged();
     }
 }

@@ -25,7 +25,7 @@
             android:exported="false">
         </activity>
         <activity
-            android:name=".auth.ProductActivity"
+            android:name=".pages.ProductActivity"
             android:exported="false">
         </activity>
         <activity

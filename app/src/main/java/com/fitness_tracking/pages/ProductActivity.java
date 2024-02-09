@@ -1,16 +1,13 @@
-package com.fitness_tracking.auth;
+package com.fitness_tracking.pages;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,8 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.fitness_tracking.Dao.DatabaseHandler;
 import com.fitness_tracking.Dao.ProductAdapter;
 import com.fitness_tracking.R;
+import com.fitness_tracking.auth.SessionManager;
 import com.fitness_tracking.entities.Produit;
-import com.fitness_tracking.pages.Home;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +56,7 @@ public class ProductActivity extends AppCompatActivity {
     public void showAddProductDialog(String title, Context context, Produit productToEdit) {
         listAdapter = new ProductAdapter(context, context, dataArrayList);
         databaseHandler=new DatabaseHandler(context);
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_add_product, null);
@@ -102,12 +100,8 @@ public class ProductActivity extends AppCompatActivity {
                 if(productToEdit==null){
                     saveProductToDatabase(productName, calorie, protein, carbs,fats);
                 }else{
-                    Toast.makeText(context, "id: "+productToEdit.getId()+" name: "+productName+" cal:"+ calorie
-                            +"prot: "+protein+"carbs"+carbs+"fats:"+fats, Toast.LENGTH_LONG).show();
-                    updateProductInDatabase(productToEdit.getId(),productName,calorie,protein,carbs,fats);
 
-
-
+                    updateProductInDatabase(productToEdit.getId(),productName,calorie,protein,carbs,fats,context);
                 }
 
                 alertDialog.dismiss();
@@ -126,13 +120,19 @@ public class ProductActivity extends AppCompatActivity {
             listAdapter.notifyDataSetChanged();
         }
     }
-    private void updateProductInDatabase(Long productId, String productName, Double calorie, Double protein, Double carbs, Double fats) {
+    private void updateProductInDatabase(Long productId, String productName, Double calorie, Double protein, Double carbs, Double fats,Context context) {
         Long id = SessionManager.getInstance().getCurrentUser().getId();
         Produit produit=new Produit(productId,productName,calorie,protein,carbs,fats,id);
         databaseHandler.updateProduit(produit);
 
+        /*databaseHandler=new DatabaseHandler(context);
+        dataArrayList = databaseHandler.getAllProduitsForUser(id);
+        listAdapter = new ProductAdapter(context,context, dataArrayList);
+
         dataArrayList.clear();
+
         dataArrayList.addAll(databaseHandler.getAllProduitsForUser(id));
-        listAdapter.notifyDataSetChanged();
+        Toast.makeText(context, "Veuillez saisir toutes les informations."+dataArrayList.size(), Toast.LENGTH_SHORT).show();
+        listAdapter.notifyDataSetChanged();*/
     }
 }

@@ -10,6 +10,7 @@
     app:cardElevation="8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -22,18 +23,37 @@
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
             android:layout_marginTop="25dp"
-            android:layout_marginStart="30dp"
-           />
+            android:layout_marginStart="30dp"/>
+
         <TextView
             android:layout_width="80dp"
             android:layout_height="30dp"
             android:id="@+id/listCal"
-            android:text="calores"
+            android:text="calories"
             android:textSize="16sp"
             android:layout_toEndOf="@id/listName"
             android:layout_marginTop="25dp"
             android:layout_marginStart="100dp"
             android:textColor="@color/colorPrimary"/>
+
+        <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_delete_24"
+            android:backgroundTint="@color/white"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="Delete Product"/>
+
+        <ImageButton
+            android:id="@+id/btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_edit_24"
+            android:backgroundTint="@color/white"
+            android:layout_toStartOf="@id/btnDelete"
+            android:layout_centerVertical="true"
+            android:contentDescription="Edit Product"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
-

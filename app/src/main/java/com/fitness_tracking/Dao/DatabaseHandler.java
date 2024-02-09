@@ -398,7 +398,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
 
         contentValues.put("id_produit", repat.getIdProduit());
-        contentValues.put("date", repat.getDate().getTime()); // Stocker la date sous forme de timestamp
+        contentValues.put("date", repat.getDate().getTime());
         contentValues.put("id_user", repat.getIdUser());
 
         long id = sqLiteDatabase.insert("REPAT", null, contentValues);
@@ -412,7 +412,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
 
         contentValues.put("id_produit", repat.getIdProduit());
-        contentValues.put("date", repat.getDate().getTime()); // Stocker la date sous forme de timestamp
+        contentValues.put("date", repat.getDate().getTime());
         contentValues.put("id_user", repat.getIdUser());
 
         sqLiteDatabase.update("REPAT", contentValues, "id = ?", new String[]{String.valueOf(repat.getId())});

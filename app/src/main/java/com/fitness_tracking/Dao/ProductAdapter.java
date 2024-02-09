@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import com.fitness_tracking.R;
 import com.fitness_tracking.auth.LoginActivity;
 import com.fitness_tracking.auth.ProductActivity;
+import com.fitness_tracking.auth.SessionManager;
 import com.fitness_tracking.entities.Produit;
 
 public class ProductAdapter extends ArrayAdapter<Produit> {
@@ -78,6 +79,12 @@ public class ProductAdapter extends ArrayAdapter<Produit> {
     private void deleteProduct(long productId) {
         DatabaseHandler databaseHandler = new DatabaseHandler(getContext());
         databaseHandler.deleteProduit(productId);
+
+        Long id = SessionManager.getInstance().getCurrentUser().getId();
+
+        this.clear();
+        this.addAll(databaseHandler.getAllProduitsForUser(id));
+        this.notifyDataSetChanged();
 
     }
 

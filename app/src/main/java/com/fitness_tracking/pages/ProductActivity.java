@@ -1,22 +1,29 @@
 package com.fitness_tracking.pages;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fitness_tracking.Dao.DatabaseHandler;
 import com.fitness_tracking.Dao.ProductAdapter;
 import com.fitness_tracking.R;
+import com.fitness_tracking.auth.Register;
 import com.fitness_tracking.auth.SessionManager;
 import com.fitness_tracking.entities.Produit;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +32,7 @@ public class ProductActivity extends AppCompatActivity {
     ProductAdapter listAdapter;
     List<Produit> dataArrayList = new ArrayList<>();
     DatabaseHandler databaseHandler=new DatabaseHandler(this);
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +58,45 @@ public class ProductActivity extends AppCompatActivity {
                 showAddProductDialog("Add Prduct",ProductActivity.this,null);
             }
         });
+        bottomNavigationView= findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.fitness);
+
+
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id=item.getItemId();
+
+                if(id==R.id.person) {
+                    Toast.makeText(ProductActivity.this, "person", Toast.LENGTH_SHORT).show();
+                    Intent intent4 = new Intent(ProductActivity.this, Register.class);
+                    startActivity(intent4);
+                    return true;
+
+                }else
+                if(id==R.id.home) {
+                    return true;
+
+                }else if(id==R.id.fitness) {
+                    Toast.makeText(ProductActivity.this, "fitness", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProductActivity.this, "home.", Toast.LENGTH_SHORT).show();
+                    Intent intent4 = new Intent(ProductActivity.this, Home.class);
+                    startActivity(intent4);
+                    return true;
+
+                }else if(id== R.id.workout){
+                    Toast.makeText(ProductActivity.this, "workout.", Toast.LENGTH_SHORT).show();
+
+                    return true;
+                }
+                return false;
+            }
+        });
 
     }
 
-    public void showAddProductDialog(String title, Context context, Produit productToEdit) {
+    public void showAddProductDialog(String title, Context context, Produit productToEdit)
+    {
         listAdapter = new ProductAdapter(context, context, dataArrayList);
         databaseHandler=new DatabaseHandler(context);
 

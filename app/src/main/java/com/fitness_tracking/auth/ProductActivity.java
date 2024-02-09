@@ -57,6 +57,7 @@ public class ProductActivity extends AppCompatActivity {
     }
 
     public void showAddProductDialog(String title, Context context, Produit productToEdit) {
+        databaseHandler=new DatabaseHandler(context);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_add_product, null);
@@ -102,12 +103,8 @@ public class ProductActivity extends AppCompatActivity {
                 }else{
                     Toast.makeText(context, "id: "+productToEdit.getId()+" name: "+productName+" cal:"+ calorie
                             +"prot: "+protein+"carbs"+carbs+"fats:"+fats, Toast.LENGTH_LONG).show();
-                    //saveProductToDatabase(productName, calorie, protein, carbs,fats);
-                    //updateProductInDatabase(productToEdit.getId(),productName,calorie,protein,carbs,fats);
+                    updateProductInDatabase(productToEdit.getId(),productName,calorie,protein,carbs,fats);
                 }
-                    //saveProductToDatabase(productName, calorie, protein, carbs,fats);
-                    //Toast.makeText(getApplicationContext(), "Adresse e-mail déjà existante." , Toast.LENGTH_SHORT).show();
-                    //updateProductInDatabase(productToEdit.getId(),productName,calorie,protein,carbs,fats);
 
                 alertDialog.dismiss();
             }

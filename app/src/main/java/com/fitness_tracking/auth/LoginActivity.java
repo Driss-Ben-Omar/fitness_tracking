@@ -1,9 +1,8 @@
 package com.fitness_tracking.auth;
 import com.fitness_tracking.Dao.DatabaseHandler;
-import com.fitness_tracking.MainActivity;
 import com.fitness_tracking.R;
 import com.fitness_tracking.entities.User;
-import com.fitness_tracking.pages.Home;
+import com.fitness_tracking.pages.ProductActivity;
 
 import android.content.Intent;
 import android.os.Bundle;

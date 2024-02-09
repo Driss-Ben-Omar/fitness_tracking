@@ -1,15 +1,11 @@
 package com.fitness_tracking.Dao;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -17,8 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.fitness_tracking.R;
-import com.fitness_tracking.auth.LoginActivity;
-import com.fitness_tracking.auth.ProductActivity;
+import com.fitness_tracking.pages.ProductActivity;
 import com.fitness_tracking.auth.SessionManager;
 import com.fitness_tracking.entities.Produit;
 
@@ -31,6 +26,7 @@ public class ProductAdapter extends ArrayAdapter<Produit> {
         super(context, R.layout.card_item, dataArrayList);
         this.activityContext = activityContext;
     }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View view, @NonNull ViewGroup parent) {
@@ -85,6 +81,14 @@ public class ProductAdapter extends ArrayAdapter<Produit> {
         this.clear();
         this.addAll(databaseHandler.getAllProduitsForUser(id));
         this.notifyDataSetChanged();
+
+    }
+
+    private void updateProductInDatabase(Long productId, String productName, Double calorie, Double protein, Double carbs, Double fats) {
+        DatabaseHandler databaseHandler = new DatabaseHandler(getContext());
+        Long id = SessionManager.getInstance().getCurrentUser().getId();
+        Produit produit=new Produit(productId,productName,calorie,protein,carbs,fats,id);
+        databaseHandler.updateProduit(produit);
 
     }
 

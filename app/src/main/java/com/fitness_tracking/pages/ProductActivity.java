@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +40,7 @@ public class ProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.produit);
 
-        ListView listView = findViewById(R.id.listview);
+        GridView listView = findViewById(R.id.gridview);
 
         Long id = SessionManager.getInstance().getCurrentUser().getId();
 

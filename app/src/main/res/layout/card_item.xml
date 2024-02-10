@@ -2,39 +2,113 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginStart="12dp"
-    android:layout_marginEnd="12dp"
-    android:layout_marginVertical="10dp"
-    android:layout_marginHorizontal="10dp"
+    android:layout_margin="10dp"
     app:cardCornerRadius="20dp"
     app:cardElevation="8dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="200dp"
+    android:layout_height="200dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <TextView
-            android:layout_width="120dp"
-            android:layout_height="30dp"
             android:id="@+id/listName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Name"
             android:textColor="@color/colorPrimary"
-            android:textSize="20sp"
-            android:layout_marginTop="25dp"
-            android:layout_marginStart="30dp"/>
+            android:textSize="18sp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            />
 
         <TextView
-            android:layout_width="80dp"
-            android:layout_height="30dp"
             android:id="@+id/listCal"
-            android:text="calories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calories"
             android:textSize="16sp"
-            android:layout_toEndOf="@id/listName"
-            android:layout_marginTop="25dp"
-            android:layout_marginStart="100dp"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@android:color/black"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            />
+
+
+
+        <!-- Protein -->
+        <TextView
+            android:id="@+id/labelProtein"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Protein:"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_below="@id/listCal"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="50dp"
+            />
+
+        <TextView
+            android:id="@+id/listProtein"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0g"
+            android:textColor="@android:color/black"
+            android:layout_toEndOf="@id/labelProtein"
+            android:layout_alignBaseline="@id/labelProtein"
+            android:layout_marginStart="25dp"
+            />
+
+        <!-- Carbs -->
+        <TextView
+            android:id="@+id/labelCarbs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Carbs:"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_below="@id/labelProtein"
+            android:layout_marginTop="15dp"
+            android:layout_alignLeft="@+id/labelProtein"
+
+            />
+
+        <TextView
+            android:id="@+id/listCarbs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0g"
+            android:textColor="@android:color/black"
+            android:layout_alignBaseline="@id/labelCarbs"
+            android:layout_alignRight="@+id/listProtein"
+            />
+
+        <!-- Fat -->
+        <TextView
+            android:id="@+id/labelFat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fat:"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_below="@id/labelCarbs"
+            android:layout_marginTop="15dp"
+            android:layout_alignLeft="@+id/labelProtein"
+            />
+
+        <TextView
+            android:id="@+id/listFat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0g"
+            android:textColor="@android:color/black"
+            android:layout_alignBaseline="@id/labelFat"
+            android:layout_alignRight="@+id/listProtein"
+            />
+
 
         <ImageButton
             android:id="@+id/btnDelete"
@@ -42,8 +116,10 @@
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_delete_24"
             android:backgroundTint="@color/white"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginBottom="10dp"
             android:contentDescription="Delete Product"/>
 
         <ImageButton
@@ -52,8 +128,10 @@
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_edit_24"
             android:backgroundTint="@color/white"
-            android:layout_toStartOf="@id/btnDelete"
-            android:layout_centerVertical="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="10dp"
             android:contentDescription="Edit Product"/>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

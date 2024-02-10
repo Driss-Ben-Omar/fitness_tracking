@@ -70,8 +70,7 @@ public class ProductActivity extends AppCompatActivity {
 
                 if(id==R.id.person) {
                     Toast.makeText(ProductActivity.this, "person", Toast.LENGTH_SHORT).show();
-                    Intent intent4 = new Intent(ProductActivity.this, Register.class);
-                    startActivity(intent4);
+
                     return true;
 
                 }else
@@ -80,14 +79,11 @@ public class ProductActivity extends AppCompatActivity {
 
                 }else if(id==R.id.fitness) {
                     Toast.makeText(ProductActivity.this, "fitness", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(ProductActivity.this, "home.", Toast.LENGTH_SHORT).show();
-                    Intent intent4 = new Intent(ProductActivity.this, Home.class);
-                    startActivity(intent4);
                     return true;
 
                 }else if(id== R.id.workout){
-                    Toast.makeText(ProductActivity.this, "workout.", Toast.LENGTH_SHORT).show();
-
+                    Intent intent4 = new Intent(ProductActivity.this, ExerciceActivity.class);
+                    startActivity(intent4);
                     return true;
                 }
                 return false;

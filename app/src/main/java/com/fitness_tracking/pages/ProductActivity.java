@@ -75,6 +75,8 @@ public class ProductActivity extends AppCompatActivity {
 
                 }else
                 if(id==R.id.home) {
+                    Intent intent4 = new Intent(ProductActivity.this, WorkoutActivity.class);
+                    startActivity(intent4);
                     return true;
 
                 }else if(id==R.id.fitness) {

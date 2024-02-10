@@ -64,7 +64,7 @@ public class WorkoutActivity extends AppCompatActivity {
         });
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setSelectedItemId(R.id.workout);
+        bottomNavigationView.setSelectedItemId(R.id.home);
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -73,23 +73,20 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 if (id == R.id.person) {
                     Toast.makeText(WorkoutActivity.this, "person", Toast.LENGTH_SHORT).show();
-                    Intent intent4 = new Intent(WorkoutActivity.this, Register.class);
-                    startActivity(intent4);
                     return true;
 
                 } else if (id == R.id.home) {
                     Toast.makeText(WorkoutActivity.this, "home", Toast.LENGTH_SHORT).show();
-                    Intent intent4 = new Intent(WorkoutActivity.this, Home.class);
-                    startActivity(intent4);
                     return true;
 
                 } else if (id == R.id.fitness) {
-                    Toast.makeText(WorkoutActivity.this, "fitness", Toast.LENGTH_SHORT).show();
                     Intent intent4 = new Intent(WorkoutActivity.this, ProductActivity.class);
                     startActivity(intent4);
                     return true;
 
                 } else if (id == R.id.workout) {
+                    Intent intent4 = new Intent(WorkoutActivity.this, ExerciceActivity.class);
+                    startActivity(intent4);
                     return true;
                 }
                 return false;

@@ -68,12 +68,13 @@ public class ExerciceActivity extends AppCompatActivity {
 
                 if(id==R.id.person) {
                     Toast.makeText(ExerciceActivity.this, "person", Toast.LENGTH_SHORT).show();
-                    Intent intent4 = new Intent(ExerciceActivity.this, Register.class);
-                    startActivity(intent4);
+
                     return true;
 
                 }else
                 if(id==R.id.home) {
+                    Intent intent4 = new Intent(ExerciceActivity.this, WorkoutActivity.class);
+                    startActivity(intent4);
                     return true;
 
                 }else if(id==R.id.fitness) {

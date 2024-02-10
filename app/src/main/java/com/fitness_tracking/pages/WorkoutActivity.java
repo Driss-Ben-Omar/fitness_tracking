@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import com.fitness_tracking.R;
 import com.fitness_tracking.auth.LoginActivity;
 import com.fitness_tracking.auth.Register;
 import com.fitness_tracking.auth.SessionManager;
+import com.fitness_tracking.entities.Exercice;
 import com.fitness_tracking.entities.Produit;
 import com.fitness_tracking.entities.Repat;
 import com.fitness_tracking.entities.Workout;
@@ -126,9 +129,19 @@ public class WorkoutActivity extends AppCompatActivity {
         final EditText editTextWeight = dialogView.findViewById(R.id.editTextWeightWorkout);
         final EditText editTextRepetition = dialogView.findViewById(R.id.editTextRepetition);
         final EditText editTextSerie = dialogView.findViewById(R.id.editTextSerieWorkout);
+        final Spinner spinner = dialogView.findViewById(R.id.spinnerWorkout);
 
         TextView titlePage = dialogView.findViewById(R.id.titleAddWorkout);
         titlePage.setText(title);
+        Long id=SessionManager.getInstance().getCurrentUser().getId();
+        List<Exercice> exercices = databaseHandler.getAllExercicesForUser(id);
+        ArrayAdapter<Exercice> spinnerAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, exercices);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinner.setAdapter(spinnerAdapter);
+
+
+
 
         if(workoutToEdit!=null){
             editTextWeight.setText(String.valueOf(workoutToEdit.getWeight()));
@@ -155,11 +168,11 @@ public class WorkoutActivity extends AppCompatActivity {
                 int workoutSerie =Integer.parseInt(editTextSerie.getText().toString());
                 int workoutRepetition =Integer.parseInt(editTextRepetition.getText().toString());
                 double workoutweight =Double.parseDouble(editTextWeight.getText().toString());
+                Exercice ex=(Exercice) spinner.getSelectedItem();
 
                 if(workoutToEdit==null){
-                    saveWorkoutDatabase(workoutweight,workoutRepetition,workoutSerie);
+                    saveWorkoutDatabase(workoutweight,workoutRepetition,workoutSerie,ex.getId(),id);
                 }else{
-
                     updateWorkoutInDatabase(workoutToEdit.getId(),workoutweight,workoutRepetition,workoutSerie,context);
                 }
 
@@ -220,13 +233,13 @@ public class WorkoutActivity extends AppCompatActivity {
     }
 
 
-    private void saveWorkoutDatabase(double wei, int rep,int serie) {
-        Long id = SessionManager.getInstance().getCurrentUser().getId();
-        Workout workout=new Workout(null,null,wei,serie,rep,new Date(),id);
+    private void saveWorkoutDatabase(double wei, int rep,int serie,Long idExercice,Long idUser) {
+
+        Workout workout=new Workout(null,idExercice,wei,serie,rep,new Date(),idUser);
         Long saved=databaseHandler.addWorkout(workout);
         if (saved != -1) {
             dataArrayList.clear();
-            dataArrayList.addAll(databaseHandler.getAllWorkoutsForUser(id));
+            dataArrayList.addAll(databaseHandler.getAllWorkoutsForUser(idUser));
             listAdapter.notifyDataSetChanged();
         }
     }

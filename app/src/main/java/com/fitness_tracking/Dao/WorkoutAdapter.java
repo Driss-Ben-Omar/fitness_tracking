@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import com.fitness_tracking.R;
 import com.fitness_tracking.auth.SessionManager;
 import com.fitness_tracking.entities.Repat;
+import com.fitness_tracking.entities.Exercice;
 import com.fitness_tracking.entities.Workout;
 import com.fitness_tracking.pages.WorkoutActivity;
 
@@ -47,7 +48,9 @@ public class WorkoutAdapter extends ArrayAdapter<Workout> {
         TextView workoutDate = view.findViewById(R.id.workoutDate);
 
         if (workoutData != null) {
-            workoutName.setText("Name: " );
+            DatabaseHandler db=new DatabaseHandler(activityContext);
+            Exercice ex=db.getExerciseById(workoutData.getIdExercice());
+            workoutName.setText(ex.getName());
             workoutWeight.setText("Weight: " + String.valueOf(workoutData.getWeight()));
             workoutRepetition.setText("Repetition: " + String.valueOf(workoutData.getRepetition()));
 

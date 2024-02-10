@@ -1,9 +1,11 @@
 package com.fitness_tracking.auth;
 import com.fitness_tracking.Dao.DatabaseHandler;
+import com.fitness_tracking.MainActivity;
 import com.fitness_tracking.R;
 import com.fitness_tracking.entities.User;
 import com.fitness_tracking.pages.ExerciceActivity;
 import com.fitness_tracking.pages.ProductActivity;
+import com.fitness_tracking.pages.WorkoutActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,12 +45,13 @@ public class LoginActivity extends AppCompatActivity {
                             if (DB.checkUserCredentials(emailValue, pass)) {
                                 Optional<User> userOptional = DB.getUserByEmailAndPassword(emailValue, pass);
                                 if (userOptional.isPresent()) {
+
                                     User user = userOptional.get();
                                     // Store the logged-in user in the session
                                     SessionManager.getInstance().loginUser(user);
                                     // Now we have the logged user data
                                     Toast.makeText(LoginActivity.this, "Connexion réussie.", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), ExerciceActivity.class);
+                                    Intent intent = new Intent(getApplicationContext(), WorkoutActivity.class);
                                     startActivity(intent);
                                 } else {
                                     Toast.makeText(LoginActivity.this, "Connexion échoué.", Toast.LENGTH_SHORT).show();

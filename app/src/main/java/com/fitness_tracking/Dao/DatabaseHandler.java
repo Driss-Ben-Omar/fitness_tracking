@@ -68,7 +68,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             "CREATE TABLE IF NOT EXISTS REPAT (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "id_produit INTEGER, " +
-                    "date TEXT, " +
+                    "weight DOUBLE,"+
+                    "date Date, " +
                     "id_user INTEGER, " +
                     "FOREIGN KEY (id_produit) REFERENCES PRODUIT(id), " +
                     "FOREIGN KEY (id_user) REFERENCES USER(id)" +
@@ -480,6 +481,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Repat repat = new Repat(
                         cursor.getLong(cursor.getColumnIndex("id")),
                         cursor.getLong(cursor.getColumnIndex("id_produit")),
+                        cursor.getDouble(cursor.getColumnIndex("weight")),
                         new Date(cursor.getLong(cursor.getColumnIndex("date"))),
                         cursor.getLong(cursor.getColumnIndex("id_user"))
                 );

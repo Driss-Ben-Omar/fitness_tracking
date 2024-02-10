@@ -8,7 +8,25 @@ public class Repat {
 
     Long idProduit;
 
+    double weight;
+
     Date date;
+
+    public Repat(Long id, Long idProduit, double weight, Date date, Long idUser) {
+        this.id = id;
+        this.idProduit = idProduit;
+        this.weight = weight;
+        this.date = date;
+        this.idUser = idUser;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
 
     Long idUser;
 
@@ -20,12 +38,7 @@ public class Repat {
         this.idUser = idUser;
     }
 
-    public Repat(Long id, Long idProduit, Date date, Long idUser) {
-        this.id = id;
-        this.idProduit = idProduit;
-        this.date = date;
-        this.idUser = idUser;
-    }
+
 
     public Repat() {
         super();

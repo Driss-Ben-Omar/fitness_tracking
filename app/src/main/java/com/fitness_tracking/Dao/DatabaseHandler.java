@@ -43,7 +43,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     ");";
 
     private static final String CREATE_TABLE_EXERCISE =
-            "CREATE TABLE IF NOT EXISTS EXERCISE (" +
+            "CREATE TABLE IF NOT EXISTS EXERCICE (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "name TEXT, " +
                     "path TEXT, " +
@@ -256,8 +256,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public long addExercice(Exercice exercice) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-
         contentValues.put("name", exercice.getName());
+
         contentValues.put("path", exercice.getPath());
         contentValues.put("description", exercice.getDescription());
         contentValues.put("id_user", exercice.getIdUser());
@@ -274,6 +274,46 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         sqLiteDatabase.delete("EXERCICE", "id = ?", new String[]{String.valueOf(id)});
 
         sqLiteDatabase.close();
+    }
+
+    @SuppressLint("Range")
+    public List<Exercice> getAllExercicesForUser(long userId) {
+        List<Exercice> exercicesList = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = null;
+        Cursor cursor = null;
+        try{
+            sqLiteDatabase = this.getReadableDatabase();
+
+            cursor = sqLiteDatabase.query("EXERCICE", null, "id_user = ?", new String[]{String.valueOf(userId)}, null, null, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    Exercice exercice = new Exercice(
+                            cursor.getLong(cursor.getColumnIndex("id")),
+                            cursor.getString(cursor.getColumnIndex("name")),
+                            cursor.getString(cursor.getColumnIndex("path")),
+                            cursor.getString(cursor.getColumnIndex("description")),
+                            cursor.getLong(cursor.getColumnIndex("id_user"))
+                    );
+                    exercicesList.add(exercice);
+                } while (cursor.moveToNext());
+
+                cursor.close();
+
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close cursor and database connection
+            if (cursor != null) {
+                cursor.close();
+            }
+            if (sqLiteDatabase != null) {
+                sqLiteDatabase.close();
+            }
+        }
+
+        return exercicesList;
     }
 
     @SuppressLint("Range")

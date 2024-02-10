@@ -152,6 +152,7 @@ public class ProductActivity extends AppCompatActivity {
             }
         });
 
+
         alertDialog.show();
     }
     private void saveProductToDatabase(String productName, Double calorie, Double protein, Double carbs,Double fats) {

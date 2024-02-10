@@ -437,9 +437,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public long addRepat(Repat repat) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-
         contentValues.put("id_produit", repat.getIdProduit());
         contentValues.put("date", repat.getDate().getTime());
+        contentValues.put("weight",repat.getWeight());
         contentValues.put("id_user", repat.getIdUser());
 
         long id = sqLiteDatabase.insert("REPAT", null, contentValues);
@@ -454,6 +454,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         contentValues.put("id_produit", repat.getIdProduit());
         contentValues.put("date", repat.getDate().getTime());
+        contentValues.put("weight",repat.getWeight());
         contentValues.put("id_user", repat.getIdUser());
 
         sqLiteDatabase.update("REPAT", contentValues, "id = ?", new String[]{String.valueOf(repat.getId())});
@@ -473,6 +474,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public List<Repat> getAllRepatsForUser(long userId) {
         List<Repat> repatsList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
 
         Cursor cursor = sqLiteDatabase.query("REPAT", null, "id_user = ?", new String[]{String.valueOf(userId)}, null, null, null);
 
@@ -503,7 +505,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put("weight", workout.getWeight());
         contentValues.put("serie", workout.getSerie());
         contentValues.put("repetition", workout.getRepetition());
-        contentValues.put("date", workout.getDate().getTime()); // Stocker la date sous forme de timestamp
+        contentValues.put("date", workout.getDate().getTime());
         contentValues.put("id_user", workout.getIdUser());
 
         long id = sqLiteDatabase.insert("WORKOUT", null, contentValues);

@@ -17,12 +17,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.fitness_tracking.Dao.DatabaseHandler;
+import com.fitness_tracking.Dao.RepatAdapter;
 import com.fitness_tracking.Dao.WorkoutAdapter;
 import com.fitness_tracking.R;
 import com.fitness_tracking.auth.LoginActivity;
 import com.fitness_tracking.auth.Register;
 import com.fitness_tracking.auth.SessionManager;
 import com.fitness_tracking.entities.Produit;
+import com.fitness_tracking.entities.Repat;
 import com.fitness_tracking.entities.Workout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -33,7 +35,11 @@ import java.util.List;
 
 public class WorkoutActivity extends AppCompatActivity {
     WorkoutAdapter listAdapter;
+
+    RepatAdapter listRepatAdapter;
     List<Workout> dataArrayList = new ArrayList<>();
+
+    List<Repat> dataRepatArrayList=new ArrayList<>();
     DatabaseHandler databaseHandler = new DatabaseHandler(this);
     BottomNavigationView bottomNavigationView;
 
@@ -45,16 +51,30 @@ public class WorkoutActivity extends AppCompatActivity {
 
         ListView listView = findViewById(R.id.workoutListView);
 
+        ListView listView1=findViewById(R.id.repatListView);
+
         Long id = SessionManager.getInstance().getCurrentUser().getId();
 
         dataArrayList = databaseHandler.getAllWorkoutsForUser(id);
+        dataRepatArrayList=databaseHandler.getAllRepatsForUser(id);
 
         listAdapter = new WorkoutAdapter(getApplicationContext(), this, dataArrayList);
+        listRepatAdapter=new RepatAdapter(getApplicationContext(),this,dataRepatArrayList);
         int count=databaseHandler.getAllWorkoutsForUser(id).size();
 
         listView.setAdapter(listAdapter);
+        listView1.setAdapter(listRepatAdapter);
 
         Button btnAddWorkout = findViewById(R.id.btnAddWorkout);
+
+        Button btnAddRepat= findViewById(R.id.btnAddRepat);
+
+        btnAddRepat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddRepatDialog("Add Repat", WorkoutActivity.this, null);
+            }
+        });
 
         btnAddWorkout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +171,55 @@ public class WorkoutActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    public void showAddRepatDialog(String title, Context context, Repat repatToEdit) {
+        listRepatAdapter = new RepatAdapter(context, context, dataRepatArrayList);
+        databaseHandler = new DatabaseHandler(context);
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.dialog_add_repat, null);
+        dialogBuilder.setView(dialogView);
+
+        final EditText editTextWeight = dialogView.findViewById(R.id.editTextWeightRepat);
+
+        TextView titlePage = dialogView.findViewById(R.id.titleAddRepat);
+        titlePage.setText(title);
+
+        if (repatToEdit != null) {
+            editTextWeight.setText(String.valueOf(repatToEdit.getWeight()));
+        }
+
+        Button btnCancel = dialogView.findViewById(R.id.btnCancelRepat);
+        Button btnOK = dialogView.findViewById(R.id.btnOKRepat);
+
+        final AlertDialog alertDialog = dialogBuilder.create();
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                double repatWeight = Double.parseDouble(editTextWeight.getText().toString());
+
+                if (repatToEdit == null) {
+                    saveRepatDatabase(repatWeight);
+                } else {
+                    updateWorkoutInDatabase(repatToEdit.getId(), repatWeight, context);
+                }
+
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+    }
+
+
     private void saveWorkoutDatabase(double wei, int rep,int serie) {
         Long id = SessionManager.getInstance().getCurrentUser().getId();
         Workout workout=new Workout(null,null,wei,serie,rep,new Date(),id);
@@ -160,6 +229,25 @@ public class WorkoutActivity extends AppCompatActivity {
             dataArrayList.addAll(databaseHandler.getAllWorkoutsForUser(id));
             listAdapter.notifyDataSetChanged();
         }
+    }
+
+    private void saveRepatDatabase(double wei) {
+        Long id = SessionManager.getInstance().getCurrentUser().getId();
+        Repat repat=new Repat(null,null,wei,new Date(),id);
+        Long saved=databaseHandler.addRepat(repat);
+        if (saved != -1) {
+            Toast.makeText(WorkoutActivity.this, "id saved :"+saved, Toast.LENGTH_SHORT).show();
+            dataRepatArrayList.clear();
+            dataRepatArrayList.addAll(databaseHandler.getAllRepatsForUser(id));
+            listAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void updateWorkoutInDatabase(Long RepatId, double weight,Context context) {
+        Long id = SessionManager.getInstance().getCurrentUser().getId();
+        Repat repat=new Repat(RepatId,null,weight,new Date(),id);
+        databaseHandler.updateRepat(repat);
+
     }
 
     private void updateWorkoutInDatabase(Long workoutId, double weight, int repetition, int serie,Context context) {

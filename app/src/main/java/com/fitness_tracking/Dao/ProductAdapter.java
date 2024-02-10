@@ -38,10 +38,16 @@ public class ProductAdapter extends ArrayAdapter<Produit> {
 
         TextView listName = view.findViewById(R.id.listName);
         TextView listCal = view.findViewById(R.id.listCal);
+        TextView listProtein = view.findViewById(R.id.listProtein);
+        TextView listCarbs = view.findViewById(R.id.listCarbs);
+        TextView listFat = view.findViewById(R.id.listFat);
 
         if (listData != null) {
             listName.setText(listData.getName());
-            listCal.setText(String.valueOf(listData.getCalorie()));
+            listCal.setText(String.valueOf(listData.getCalorie())+" Cal");
+            listProtein.setText(String.valueOf(listData.getProteine()));
+            listCarbs.setText(String.valueOf(listData.getCarbe()));
+            listFat.setText(String.valueOf(listData.getFate()));
         }
 
         ImageButton btnDelete = view.findViewById(R.id.btnDelete);

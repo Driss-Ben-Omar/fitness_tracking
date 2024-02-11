@@ -4,12 +4,16 @@ plugins {
 
 android {
     namespace = "com.fitness_tracking"
-    compileSdk = 33
+    compileSdk = 34
+
+    buildFeatures {
+        dataBinding = true
+    }
 
     defaultConfig {
         applicationId = "com.fitness_tracking"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
